@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json,txt
 version = 1.1.0
 
-requirements = python3==3.11.17,hostpython3==3.11.17,kivy==2.3.0,plyer,kivy_garden.mapview,requests,openssl
+requirements = python3==3.11.17,hostpython3==3.11.17,kivy==2.3.1,plyer,kivy_garden.mapview,requests,openssl
 
 orientation = portrait
 fullscreen = 0
