@@ -39,12 +39,17 @@ jobs:
       - name: Install compatible Python build toolchain
         run: |
           python --version
+          # Pin pip/setuptools to versions compatible with python-for-android
           python -m pip install --upgrade "pip<24.2" "setuptools<70" wheel
+          # Pin buildozer + cython to known working versions
           python -m pip install --upgrade "buildozer==1.5.0" "cython==0.29.36"
 
       - name: Clean old build cache
         run: |
+          # Entfernt alten Buildozer-Cache/artefakte, damit kein fehlerhafter Zustand wiederverwendet wird
           rm -rf .buildozer
+          # Optional: zusätzliche sichere Reinigung (uncomment if needed)
+          # rm -rf .buildozer/android/platform
 
       - name: Build debug APK
         run: |
