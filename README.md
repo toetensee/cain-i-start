@@ -1,35 +1,29 @@
-# Can I Start? — Android-App
+# Can I Start? - aktualisierte Android-App
 
-## Enthaltene Dateien
-- `main.py`: Kivy-App, Windabschätzung, Drohnen hinzufügen/löschen, lokale Speicherung, GPS und Geländeschätzung.
-- `buildozer.spec`: Buildozer-Konfiguration für Android.
-- `.github/workflows/build.yml`: GitHub Actions Workflow zum Erstellen einer Debug-APK.
+## Dateien
+- `main.py`: Eine zentrale Python-Datei für die Windberechnung, Drohnenverwaltung und den Karten-Reiter.
+- `buildozer.spec`: Android-Abhängigkeiten und Berechtigungen.
+- `.github/workflows/build.yml`: GitHub Actions Build-Workflow.
 
-## Funktionen
-- Hellmann-Potenzgesetz: `v2 = v1 * (h2 / h1) ** alpha`.
-- Eingaben akzeptieren Komma oder Punkt.
-- Eigene Drohnen mit Windgrenze anlegen, lokal speichern und wieder löschen.
-- GPS über Android-Standortberechtigung; manuelle Koordinaten als Fallback.
-- Kartenansicht über OpenStreetMap im Browser.
-- Öffnet die offizielle deutsche dipul-Geozonenkarte zur manuellen Prüfung.
-- Versucht anhand nahegelegener OpenStreetMap-Tags eine grobe Gelände-Empfehlung (α). Das ist kein Messwert und kann falsch/unvollständig sein.
+## Änderungen
+- Zwei klar beschriftete Reiter: **WIND & DROHNEN** und **KARTE**.
+- Die interaktive OpenStreetMap-Karte ist direkt in der App eingebettet und lädt Kacheln bei App-Start. Sie startet auf einer neutralen Deutschland-Übersicht und behauptet nicht, dass der Nutzer in Berlin sei.
+- Im Karten-Reiter kann der Standort per GPS ermittelt oder manuell eingegeben werden. Bei GPS-Fehlern wird kein Standort erfunden; eine verständliche Fehlermeldung wird angezeigt.
+- Flugzonen-/dipul-Funktionen und die Gelände-Abfrage wurden aus der Oberfläche entfernt.
+- Emojis und dekorative Symbolzeichen wurden aus den Bedienflächen entfernt. Kivy verwendet nicht automatisch für alle Plattformen eine vollständige farbige Emoji-Schrift; einfache Textbeschriftungen sind zuverlässiger.
+- Eigene Drohnen werden lokal in `App.user_data_dir/drones.json` gespeichert.
 
-## Wichtige Grenzen
-Die App prüft Flugverbotszonen **nicht automatisch** und erteilt keine rechtliche Startfreigabe. Die dipul-Karte wird geöffnet, damit die Person vor Ort die Geozonen und Bedingungen selbst kontrolliert. Es wurde keine frei nutzbare, dokumentierte Live-Schnittstelle für eine verlässliche automatische Freigabe eingebaut. Die Windberechnung ist nur eine grobe Schätzung; Böen, Turbulenzen, Hindernisse und die Regeln sind separat zu berücksichtigen.
+## Build
+1. Dateien ins Repository kopieren und committen.
+2. GitHub Actions öffnen und den Workflow **Build Can I Start APK** starten.
+3. Das Artefakt `Can-I-Start-APK` herunterladen und entpacken.
+4. APK auf Android installieren.
 
-## Build über GitHub
-1. Lege `main.py`, `buildozer.spec` und `.github/workflows/build.yml` im Repository ab.
-2. Commit/pushe die Dateien auf `main` oder `master`.
-3. Öffne im Repository den Reiter **Actions** und wähle den Workflow „Build Can I Start APK“.
-4. Nach erfolgreichem Lauf den Artifact `Can-I-Start-APK` herunterladen und entpacken.
-5. Die enthaltene APK auf Android installieren. Android kann vor der Installation aus einer unbekannten Quelle warnen.
+## Hinweise
+Die Karte benötigt eine Internetverbindung. Die Kartendarstellung stammt von OpenStreetMap und unterliegt deren Nutzungsrichtlinien/Attribution. GPS funktioniert nur, wenn Android Standortdienste und App-Berechtigungen erlauben; ein GPS-Fix kann im Gebäude lange dauern oder ausbleiben.
 
-## Lokaler Windows-Test
-Kivy muss in deiner Python-Umgebung installiert sein:
-`python -m pip install kivy plyer`
-Dann aus dem Projektordner:
-`python main.py`
-GPS ist bei einem gewöhnlichen Windows-PC normalerweise nicht verfügbar; dort Koordinaten manuell eingeben.
+Die Windberechnung ist eine vereinfachte Schätzung. Sie ist keine Startfreigabe und berücksichtigt nicht alle Böen oder Turbulenzen.
 
-## Datenschutz / Daten
-Eigene Drohnen werden in `App.user_data_dir/drones.json` auf dem jeweiligen Gerät gespeichert. Koordinaten werden nicht in einer Cloud gespeichert. Bei der Geländeschätzung werden Koordinaten an den öffentlichen OpenStreetMap Overpass-Dienst übertragen; zum Anzeigen der Karte werden Koordinaten an OpenStreetMap übergeben. Das ist erforderlich, damit diese Online-Dienste passende Kartendaten zurückgeben können.
+### Android-Mindestversion
+
+Der Build verwendet `android.minapi = 28` (Android 9.0). Die Mindest-API wird zusätzlich in GitHub Actions über `ANDROIDMINAPI` gesetzt, damit die Android-Buildwerkzeuge denselben Zielwert erhalten. Das ist ein vorsorglicher Workaround für den CPython-Buildfehler rund um `preadv()`/`pwritev()`. Android-Versionen unter 9.0 werden damit nicht mehr unterstützt.

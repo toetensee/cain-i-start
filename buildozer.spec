@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json,txt
 version = 1.1.0
 
-requirements = python3,kivy,plyer
+requirements = python3,kivy,plyer,kivy_garden.mapview,requests,openssl
 
 orientation = portrait
 fullscreen = 0
@@ -14,7 +14,8 @@ fullscreen = 0
 # Android / Buildozer
 android.permissions = INTERNET,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION
 android.api = 35
-android.minapi = 23
+# Erhöhte Mindest-API als Workaround für CPython preadv/pwritev im Android-Build.
+android.minapi = 28
 android.archs = arm64-v8a, armeabi-v7a
 android.accept_sdk_license = True
 

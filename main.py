@@ -497,7 +497,7 @@ class CanIStartApp(App):
                 f"{status}\n"
                 f"Geschätzter Wind in {h2:g} m: {v2:.2f} m/s  /  {kmh:.1f} km/h\n"
                 f"Eingegebene Modellgrenze: {max_wind:.2f} m/s\n"
-                
+                "Keine Startfreigabe: Böen, Turbulenzen, Akkustand und Regeln extra prüfen."
             )
         except Exception as exc:
             self.result_label.color = self.theme["red"]
